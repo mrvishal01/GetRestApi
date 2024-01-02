@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
         future: result,
         builder: (context, AsyncSnapshot<List<Post>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Text('ERROR ===> ${snapshot.error}');
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -41,7 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (context, index) {
                 return ListTile(
                   //title: Text(snapshot.data![index].title ?? 'No Title'),
-                  title: Text(snapshot.data![index].title!,style: const TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                  title: Text(
+                    snapshot.data![index].title!,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                   subtitle: Text(snapshot.data![index].body!),
                 );
               },
@@ -53,7 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<List<Post>> fetchData() async {
-    final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
+    final response =
+        await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
